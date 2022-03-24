@@ -1,3 +1,4 @@
+from cmath import e
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import HTMLResponse
 import shutil
@@ -17,6 +18,7 @@ async def create_file(file: bytes = File(...)):
 @app.post("/singlefile")
 async def upload_file(files: UploadFile = File(...)):
     fileUpload = f'./upload/{files.filename}'
+
     with open(fileUpload, "wb") as buffer:
         shutil.copyfileobj(files.file, buffer)
 
@@ -47,12 +49,13 @@ async def main():
     <body>
     <H1>Single File</H1>
     <form action="/singlefile/" enctype="multipart/form-data" method="post">
-    <input name="files" type="file" multiple>
+    <input name="files" type="file" required>
     <input type="submit">
+
     </form>
     <H1>Multiple Files</H1>
     <form action="/multiplefile/" enctype="multipart/form-data" method="post">
-    <input name="files" type="file" multiple>
+    <input name="files" type="file" multiple required>
     <input type="submit">
     </form>
     </body>
